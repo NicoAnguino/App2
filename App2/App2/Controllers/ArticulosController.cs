@@ -34,20 +34,6 @@ namespace App2.Controllers
 
             //descripcion = descripcion.Trim();
 
-            ////PROBAR CUANDO EL REGISTRO ES NULL
-            //if (descripcion.Length != 0)
-            //{
-
-            //}
-            //if (descripcion != null && descripcion != "")
-            //{
-
-            //}
-            //if (!string.IsNullOrEmpty(descripcion))
-            //{
-
-            //}
-
             ////SI NO EXISTE NINGUN ELEMENTO QUE CUMPLA ESA CONDICION.. NO FUNCIONA EL PROYECTO
             //var primerRegistro = db.Articulos.Where(p => p.PrecioVenta > 10).First();
             //var primerRegistroOVacio = db.Articulos.Where(p => p.PrecioVenta > 10).FirstOrDefault();
