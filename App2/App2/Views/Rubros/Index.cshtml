@@ -1,0 +1,66 @@
+﻿@model IEnumerable<App2.Models.Rubro>
+
+@{
+    ViewData["Title"] = "Listado de Rubros";
+}
+
+<h1>Listado de Rubros</h1>
+
+<p>
+    <button class="btn btn-primary btn-sm" onclick="AbrirModal()">Nuevo Rubro</button>
+</p>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>
+                Descripción
+            </th>
+            <th class="text-center" style="width:160px">Opciones</th>
+        </tr>
+    </thead>
+    <tbody id="tbody-rubros">
+
+    </tbody>
+</table>
+
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="Titulo-Modal-Rubro"></h4>
+                <button type="button" class="close" data-dismiss="modal" onclick="VaciarFormulario()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+
+            </div>
+            <div class="modal-body">
+                <form>
+                    <input type="hidden" id="RubroID" value="0" />
+                    <div class="form-group">
+                        <label for="recipient-name" class="control-label">Descripción:</label>
+                        <input type="text" class="form-control" style="text-transform:uppercase" autocomplete="off" required id="RubroNombre">
+                        <p id="Error-RubroNombre"></p>
+                    </div>
+                    <div>
+                        @Html.DropDownList("RubrosID", null, htmlAttributes: new { @class = "form-control" })
+
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" onclick="VaciarFormulario()" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+                <button type="button" onclick="GuardarRubro()" class="btn btn-primary">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script src="~/js/Rubro.js"></script>
+    <script>
+        window.onload = CompletarTablaRubros();
+    </script>
+}
+
+
