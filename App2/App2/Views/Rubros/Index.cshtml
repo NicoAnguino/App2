@@ -34,23 +34,19 @@
 
             </div>
             <div class="modal-body">
-                <form>
+                <form id="frmFormulario" enctype="multipart/form-data">
                     <input type="hidden" id="RubroID" value="0" />
                     <div class="form-group">
                         <label for="recipient-name" class="control-label">Descripción:</label>
-                        <input type="text" class="form-control" style="text-transform:uppercase" autocomplete="off" required id="RubroNombre">
+                        <input type="text" class="form-control" style="text-transform:uppercase" autocomplete="off" required name="rubroNombre" id="RubroNombre">
                         <p id="Error-RubroNombre"></p>
                     </div>
-                    <div>
-                        @Html.DropDownList("RubrosID", null, htmlAttributes: new { @class = "form-control" })
-
+                    <div class="form-group">
+                        <label for="recipient-name" class="control-label">Archivo Adjunto:</label>
+                        <input type="file" name="archivo">
+                        <input type="submit" value="Enviar">
                     </div>
-                </form>
-                <form id="frmFormulario" enctype="multipart/form-data">
-    <input type="text" name="uncampo">
-    <input type="file" name="archivo">
-    <input type="submit" value="Enviar">
-</form>
+                </form>           
             </div>
             <div class="modal-footer">
                 <button type="button" onclick="VaciarFormulario()" class="btn btn-danger" data-dismiss="modal">Cerrar</button>

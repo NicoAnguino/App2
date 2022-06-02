@@ -36,7 +36,7 @@ namespace App2.Controllers
             return Json(rubros);
         }
 
-        public JsonResult GuardarImagen(string uncampo, IFormFile archivo)
+        public JsonResult GuardarImagen(string rubroNombre, IFormFile archivo)
         {
 
             if (archivo.Length > 0)
