@@ -51,23 +51,27 @@ namespace App2.Controllers
             //SI ES 0 - ES CORRECTO
             //SI ES 1 - CAMPO DESCRIPCION ESTÁ VACIO
             //SI ES 2 - EL REGISTRO YA EXISTE CON LA MISMA DESCRIPCION           
-
-            string tipoImg = null;
-
+            
             if (!string.IsNullOrEmpty(rubroNombre))
             {
-                byte[] img = new byte[0];
-                if (archivo.Length > 0)
+                //byte[] img = new byte[0];
+                byte[] img = null;
+                string tipoImg = null;
+
+                if (archivo != null)
                 {
-                    using (var ms = new MemoryStream())
+                    if (archivo.Length > 0)
                     {
-                        archivo.CopyTo(ms);
-                        img = ms.ToArray();
-                        tipoImg = archivo.ContentType;
-                        string base64 = Convert.ToBase64String(img);
-                        // act on the Base64 data
+                        using (var ms = new MemoryStream())
+                        {
+                            archivo.CopyTo(ms);
+                            img = ms.ToArray();
+                            tipoImg = archivo.ContentType;
+                            //string base64 = Convert.ToBase64String(img);
+                            // act on the Base64 data
+                        }
                     }
-                }
+                }               
 
                 rubroNombre = rubroNombre.ToUpper();
                 if (rubroID == 0)
@@ -105,8 +109,12 @@ namespace App2.Controllers
                         var rubro = _context.Rubros.Single(m => m.RubroID == rubroID);
                         //CAMBIAMOS LA DESCRIPCIÓN POR LA QUE INGRESÓ EL USUARIO EN LA VISTA
                         rubro.Descripcion = rubroNombre;
-                        rubro.TipoImg = tipoImg;
-                        rubro.Img = img;
+
+                        if (tipoImg != null)
+                        {
+                            rubro.TipoImg = tipoImg;
+                            rubro.Img = img;
+                        }                     
                         _context.SaveChanges();
                     }
                 }
