@@ -40,14 +40,19 @@ function AbrirModal() {
 
 function GuardarRubro() {
     $("#Error-RubroNombre").text("");
-    let rubroID = $("#RubroID").val();
+
+    let url = "../../Rubros/GuardarRubro";
+    var parametros = new FormData($("#frmFormulario")[0]);
+
     let rubroNombre = $("#RubroNombre").val().trim();
-    let rubroNombre2 = document.getElementById("RubroNombre").value;
+
     if (rubroNombre != "" && rubroNombre != null) {
         $.ajax({
             type: "POST",
-            url: '../../Rubros/GuardarRubro',
-            data: { RubroID: rubroID, Descripcion: rubroNombre },
+            url: url,
+            data: parametros,
+            contentType: false, //importante enviar este parametro en false
+            processData: false, //importante enviar este parametro en false
             success: function (resultado) {
                 if (resultado == 0) {
                     $("#exampleModal").modal("hide");
@@ -57,7 +62,9 @@ function GuardarRubro() {
                     $("#Error-RubroNombre").text("El Rubro ingresado ya existe.");
                 }
             },
-            error: function (data) {
+            error: function (r) {
+
+                alert("Error del servidor");
             }
         });
     }
@@ -106,36 +113,3 @@ function EliminarRubro(rubroID,elimina) {
         }
     });
 }
-
-
-//sobreescribimos el metodo submit para que envie la solicitud por ajax
-$("#frmFormulario").submit(function (e) {
-
-    //esto evita que se haga la petición común, es decir evita que se refresque la pagina
-    e.preventDefault();
-
-    //ruta la cual recibira nuestro archivo
-    url = "../../Rubros/GuardarImagen";
-
-    //FormData es necesario para el envio de archivo,
-    //y de la siguiente manera capturamos todos los elementos del formulario
-    var parametros = new FormData($(this)[0])
-
-    //realizamos la petición ajax con la función de jquery
-    $.ajax({
-        type: "POST",
-        url: url,
-        data: parametros,
-        contentType: false, //importante enviar este parametro en false
-        processData: false, //importante enviar este parametro en false
-        success: function (data) {
-
-            alert("Se capturo el archivo con éxito")
-        },
-        error: function (r) {
-
-            alert("Error del servidor");
-        }
-    });
-
-})

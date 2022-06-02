@@ -10,6 +10,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace App2.Controllers
 {
+    //Add-Migration InitialCreated
+    //Update-Database
     public class SubrubrosController : Controller
     {
         private readonly ApplicationDbContext _context;

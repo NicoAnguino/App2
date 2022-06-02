@@ -13,6 +13,8 @@ using System.Net.Http.Headers;
 
 namespace App2.Controllers
 {
+    //Add-Migration InitialCreated
+    //Update-Database
     public class RubrosController : Controller
     {
         private readonly ApplicationDbContext _context;      
@@ -26,6 +28,12 @@ namespace App2.Controllers
         public async Task<IActionResult> Index()
         {
             ViewBag.RubrosID = new SelectList(_context.Rubros.OrderBy(p => p.RubroID), "RubroID", "Descripcion");
+
+            var rubro = _context.Rubros.FirstOrDefault(m => m.RubroID == 1008);
+
+            ViewBag.TipoImg = rubro.TipoImg;
+            ViewBag.ImgBase64 = Convert.ToBase64String(rubro.Img);
+
             return View(await _context.Rubros.ToListAsync());
         }
 
@@ -36,40 +44,36 @@ namespace App2.Controllers
             return Json(rubros);
         }
 
-        public JsonResult GuardarImagen(string rubroNombre, IFormFile archivo)
-        {
-
-            if (archivo.Length > 0)
-            {
-                using (var ms = new MemoryStream())
-                {
-                    archivo.CopyTo(ms);
-                    var fileBytes = ms.ToArray();
-                    var tipoDeArchivo = archivo.ContentType;
-                    string base64 = Convert.ToBase64String(fileBytes);
-                    // act on the Base64 data
-                }
-            }
-
-            //aqui va el codigo que deseemos para manipular el archivo
-            return Json(true);
-        }
-
-        public JsonResult GuardarRubro(int RubroID, string Descripcion)
+        public JsonResult GuardarRubro(int rubroID, string rubroNombre, IFormFile archivo)
         {
             int resultado = 0;
 
             //SI ES 0 - ES CORRECTO
             //SI ES 1 - CAMPO DESCRIPCION ESTÁ VACIO
-            //SI ES 2 - EL REGISTRO YA EXISTE CON LA MISMA DESCRIPCION
+            //SI ES 2 - EL REGISTRO YA EXISTE CON LA MISMA DESCRIPCION           
 
-            if (!string.IsNullOrEmpty(Descripcion))
+            string tipoImg = null;
+
+            if (!string.IsNullOrEmpty(rubroNombre))
             {
-                Descripcion = Descripcion.ToUpper();
-                if (RubroID == 0)
+                byte[] img = new byte[0];
+                if (archivo.Length > 0)
+                {
+                    using (var ms = new MemoryStream())
+                    {
+                        archivo.CopyTo(ms);
+                        img = ms.ToArray();
+                        tipoImg = archivo.ContentType;
+                        string base64 = Convert.ToBase64String(img);
+                        // act on the Base64 data
+                    }
+                }
+
+                rubroNombre = rubroNombre.ToUpper();
+                if (rubroID == 0)
                 {
                     //ANTES DE CREAR EL REGISTRO DEBEMOS PREGUNTAR SI EXISTE UNO CON LA MISMA DESCRIPCION
-                    if (_context.Rubros.Any(e => e.Descripcion == Descripcion))
+                    if (_context.Rubros.Any(e => e.Descripcion == rubroNombre))
                     {
                         resultado = 2;
                     }
@@ -79,16 +83,18 @@ namespace App2.Controllers
                         //PARA ESO CREAMOS UN OBJETO DE TIPO RUBRO CON LOS DATOS NECESARIOS
                         var rubro = new Rubro
                         {
-                            Descripcion = Descripcion
+                            Descripcion = rubroNombre,  
+                            TipoImg = tipoImg
                         };
+                        rubro.Img = img;
                         _context.Add(rubro);
                         _context.SaveChanges();
-                    }                  
+                    }
                 }
                 else
                 {
                     //ANTES DE EDITAR EL REGISTRO DEBEMOS PREGUNTAR SI EXISTE UNO CON LA MISMA DESCRIPCION
-                    if (_context.Rubros.Any(e => e.Descripcion == Descripcion && e.RubroID != RubroID))
+                    if (_context.Rubros.Any(e => e.Descripcion == rubroNombre && e.RubroID != rubroID))
                     {
                         resultado = 2;
                     }
@@ -96,23 +102,25 @@ namespace App2.Controllers
                     {
                         //EDITA EL REGISTRO
                         //BUSCAMOS EL REGISTRO EN LA BASE DE DATOS
-                        var rubro = _context.Rubros.Single(m => m.RubroID == RubroID);
+                        var rubro = _context.Rubros.Single(m => m.RubroID == rubroID);
                         //CAMBIAMOS LA DESCRIPCIÓN POR LA QUE INGRESÓ EL USUARIO EN LA VISTA
-                        rubro.Descripcion = Descripcion;
+                        rubro.Descripcion = rubroNombre;
+                        rubro.TipoImg = tipoImg;
+                        rubro.Img = img;
                         _context.SaveChanges();
-                    }                  
+                    }
                 }
             }
             else
             {
                 resultado = 1;
             }
-
+       
+            //aqui va el codigo que deseemos para manipular el archivo
             return Json(resultado);
         }
 
-        //Add-Migration InitialCreated
-        //Update-Database
+      
 
         public JsonResult BuscarRubro(int RubroID)
         {

@@ -12,6 +12,8 @@ using System.Threading.Tasks;
 
 namespace App2.Controllers
 {
+    //Add-Migration InitialCreated
+    //Update-Database
     public class ArticulosController : Controller
     {
         private readonly ApplicationDbContext _context;

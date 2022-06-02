@@ -10,6 +10,8 @@
     <button class="btn btn-primary btn-sm" onclick="AbrirModal()">Nuevo Rubro</button>
 </p>
 
+<img style='display:block; width:200px;' src='data:@ViewBag.TipoImg;base64, @ViewBag.ImgBase64' />
+
 <table class="table table-bordered">
     <thead>
         <tr>
@@ -20,7 +22,6 @@
         </tr>
     </thead>
     <tbody id="tbody-rubros">
-
     </tbody>
 </table>
 
@@ -33,9 +34,9 @@
                 <button type="button" class="close" data-dismiss="modal" onclick="VaciarFormulario()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 
             </div>
-            <div class="modal-body">
-                <form id="frmFormulario" enctype="multipart/form-data">
-                    <input type="hidden" id="RubroID" value="0" />
+            <form id="frmFormulario" enctype="multipart/form-data">
+                <div class="modal-body">
+                    <input type="hidden" name="rubroID" id="RubroID" value="0" />
                     <div class="form-group">
                         <label for="recipient-name" class="control-label">Descripción:</label>
                         <input type="text" class="form-control" style="text-transform:uppercase" autocomplete="off" required name="rubroNombre" id="RubroNombre">
@@ -44,14 +45,13 @@
                     <div class="form-group">
                         <label for="recipient-name" class="control-label">Archivo Adjunto:</label>
                         <input type="file" name="archivo">
-                        <input type="submit" value="Enviar">
                     </div>
-                </form>           
-            </div>
-            <div class="modal-footer">
-                <button type="button" onclick="VaciarFormulario()" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
-                <button type="button" onclick="GuardarRubro()" class="btn btn-primary">Guardar</button>
-            </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" onclick="VaciarFormulario()" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+                    <button type="button" onclick="GuardarRubro()" class="btn btn-primary">Guardar</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
