@@ -106,3 +106,36 @@ function EliminarRubro(rubroID,elimina) {
         }
     });
 }
+
+
+//sobreescribimos el metodo submit para que envie la solicitud por ajax
+$("#frmFormulario").submit(function (e) {
+
+    //esto evita que se haga la petición común, es decir evita que se refresque la pagina
+    e.preventDefault();
+
+    //ruta la cual recibira nuestro archivo
+    url = "../../Rubros/GuardarImagen";
+
+    //FormData es necesario para el envio de archivo,
+    //y de la siguiente manera capturamos todos los elementos del formulario
+    var parametros = new FormData($(this)[0])
+
+    //realizamos la petición ajax con la función de jquery
+    $.ajax({
+        type: "POST",
+        url: url,
+        data: parametros,
+        contentType: false, //importante enviar este parametro en false
+        processData: false, //importante enviar este parametro en false
+        success: function (data) {
+
+            alert("Se capturo el archivo con éxito")
+        },
+        error: function (r) {
+
+            alert("Error del servidor");
+        }
+    });
+
+})
