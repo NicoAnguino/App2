@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using App2.Data;
 using App2.Models;
+using Microsoft.AspNetCore.Http;
+using System.IO;
+using System.Net.Http.Headers;
 
 namespace App2.Controllers
 {
@@ -33,6 +36,24 @@ namespace App2.Controllers
             return Json(rubros);
         }
 
+        public JsonResult GuardarImagen(string uncampo, IFormFile archivo)
+        {
+
+            if (archivo.Length > 0)
+            {
+                using (var ms = new MemoryStream())
+                {
+                    archivo.CopyTo(ms);
+                    var fileBytes = ms.ToArray();
+                    var tipoDeArchivo = archivo.ContentType;
+                    string base64 = Convert.ToBase64String(fileBytes);
+                    // act on the Base64 data
+                }
+            }
+
+            //aqui va el codigo que deseemos para manipular el archivo
+            return Json(true);
+        }
 
         public JsonResult GuardarRubro(int RubroID, string Descripcion)
         {
